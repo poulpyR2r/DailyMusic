@@ -9,10 +9,12 @@ const musicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  music_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    default: mongoose.Types.ObjectId,
+
+  vote_count: {
+    type: Number,
+    default: 0,
   },
+
   created_at: {
     type: Date,
     default: Date.now,

@@ -9,6 +9,11 @@ const votingSessionSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  categorie: {
+    type: String,
+    required: true,
+  },
+
   musics: [
     {
       type: mongoose.Schema.Types.ObjectId,
