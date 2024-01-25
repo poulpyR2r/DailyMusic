@@ -4,17 +4,22 @@ const voteSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User"
+    ref: "User",
   },
   music_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "Music"
+    ref: "Music",
+  },
+  session_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "VotingSession",
   },
   created_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const Vote = mongoose.model("Vote", voteSchema);

@@ -1,9 +1,9 @@
 const VotingSession = require("../Models/votingSession.model");
 const Music = require("../Models/music.model");
+
 exports.createVotingSession = async (req, res) => {
   const { module_name, expiration_date, categorie } = req.body;
 
-  console.log(req.body);
 
   if (!module_name || !expiration_date || !categorie) {
     return res

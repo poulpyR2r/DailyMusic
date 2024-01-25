@@ -2,22 +2,27 @@ const Vote = require("../Models/vote.model");
 const Music = require("../Models/music.model");
 
 exports.addVote = async (req, res) => {
-  const { userId, musicId } = req.body;
+  const { userId, musicId, sessionId } = req.body;
 
   console.log(req.body);
 
   try {
     const existingVote = await Vote.findOne({
       user_id: userId,
-      music_id: musicId,
+      session_id: sessionId,
     });
     if (existingVote) {
-      return res
-        .status(400)
-        .json({ message: "User has already voted for this music." });
+      return res.status(400).json({
+        message: "User has already voted for this sessions",
+        existingVote,
+      });
     }
 
-    const newVote = new Vote({ user_id: userId, music_id: musicId });
+    const newVote = new Vote({
+      user_id: userId,
+      music_id: musicId,
+      session_id: sessionId,
+    });
     await newVote.save();
 
     await Music.findByIdAndUpdate(musicId, { $inc: { vote_count: 1 } });
@@ -40,3 +45,4 @@ exports.getVotesByMusic = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

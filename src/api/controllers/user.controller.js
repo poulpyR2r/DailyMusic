@@ -7,7 +7,6 @@ const User = require("../Models/user.model");
 
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
-  console.log(req.body);
 
   if (!name || !email || !password) {
     return res
@@ -31,6 +30,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role: "user",
     });
 
     const savedUser = await newUser.save();
@@ -41,6 +41,7 @@ exports.register = async (req, res) => {
         id: savedUser._id,
         name: savedUser.name,
         email: savedUser.email,
+        role: savedUser.role,
       },
     });
   } catch (error) {
@@ -71,6 +72,7 @@ exports.login = async (req, res) => {
       id: user._id,
       email: user.email,
       role: user.role,
+      name: user.name,
     };
 
     const token = jwt.sign(userData, jwtkey, {

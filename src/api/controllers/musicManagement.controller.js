@@ -40,3 +40,27 @@ exports.getAllMusicBySession = async (req, res) => {
   }
 };
 
+exports.deleteMusicFromSession = async (req, res) => {
+  const { sessionId, musicId } = req.params;
+
+  try {
+    const session = await VotingSession.findById(sessionId);
+    if (!session) {
+      return res.status(404).json({ message: "Session not found" });
+    }
+
+    const musicIndex = session.musics.indexOf(musicId);
+    if (musicIndex === -1) {
+      return res.status(404).json({ message: "Music not found in session" });
+    }
+
+    session.musics.splice(musicIndex, 1);
+    await session.save();
+
+    await Music.findByIdAndDelete(musicId);
+
+    res.status(200).json({ message: "Music deleted from session" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
