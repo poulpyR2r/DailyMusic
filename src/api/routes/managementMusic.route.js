@@ -64,7 +64,6 @@ router.post("/music", verifyToken, verifyIfIsAdmin, submitMusic);
  *       500:
  *         description: Erreur interne du serveur
  */
-
 router.get("/get-musics/:sessionId", verifyToken, getAllMusicBySession);
 
 /**

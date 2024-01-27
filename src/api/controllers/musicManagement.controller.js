@@ -36,7 +36,7 @@ exports.getAllMusicBySession = async (req, res) => {
 
     res.status(200).json({ musics: session.musics });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -45,6 +45,7 @@ exports.deleteMusicFromSession = async (req, res) => {
 
   try {
     const session = await VotingSession.findById(sessionId);
+
     if (!session) {
       return res.status(404).json({ message: "Session not found" });
     }

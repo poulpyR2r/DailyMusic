@@ -16,7 +16,6 @@ exports.register = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ email });
-    console.log(existingUser);
 
     if (existingUser) {
       return res

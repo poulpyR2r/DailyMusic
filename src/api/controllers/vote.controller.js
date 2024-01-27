@@ -4,7 +4,6 @@
   exports.addVote = async (req, res) => {
     const { userId, musicId, sessionId } = req.body;
 
-    console.log(req.body);
 
     try {
       const existingVote = await Vote.findOne({
@@ -36,7 +35,6 @@
   exports.getVotesByMusic = async (req, res) => {
     const { musicId } = req.params;
 
-    console.log(req.params);
 
     try {
       const votes = await Vote.find({ music_id: musicId });

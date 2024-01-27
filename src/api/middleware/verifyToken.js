@@ -6,7 +6,6 @@ exports.verifyToken = async (req, res, next) => {
 
   const authHeader = req.headers.authorization;
 
-  console.log(authHeader);
 
   if (!authHeader) {
     return res.status(401).json({ message: "Authorization header is missing" });
@@ -22,7 +21,6 @@ exports.verifyToken = async (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    console.log(error);
     if (error instanceof jwt.JsonWebTokenError) {
       return res.status(403).json({ message: "Invalid token" });
     }
