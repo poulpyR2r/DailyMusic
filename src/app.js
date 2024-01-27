@@ -4,15 +4,13 @@ const hostname = "0.0.0.0";
 const swaggerUi = require("swagger-ui-express");
 const connectDB = require("./api/config/dbConfig");
 
-const swaggerDocs = require("./api/config/swaggerConfig");
+const swaggerDocs = require("./api/swagger/swaggerConfig");
 const port = 3005;
-
 const userRoute = require("./api/routes/user.route");
 const sessionRoute = require("./api/routes/votingSession.route");
 const voteRoute = require("./api/routes/vote.route");
 const musicRoute = require("./api/routes/managementMusic.route");
 const app = express();
-
 connectDB();
 
 app.use(cors());

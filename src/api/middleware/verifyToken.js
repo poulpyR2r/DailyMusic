@@ -3,31 +3,32 @@ require("dotenv").config();
 const jwtkey = process.env.JWT_SECRET;
 
 exports.verifyToken = async (req, res, next) => {
+
+  const authHeader = req.headers.authorization;
+
+  console.log(authHeader);
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "Authorization header is missing" });
+  }
+
+  if (!authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Invalid Authorization format" });
+  }
+
+  const token = authHeader.split(" ")[1];
   try {
-    const authHeader = req.headers["authorization"];
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      const token = authHeader.split(" ")[1];
-
-      const payload = await new Promise((resolve, reject) => {
-        jwt.verify(token, jwtkey, (error, decoded) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(decoded);
-          }
-        });
-      });
-
-      req.user = payload;
-      next();
-    } else {
-      res
-        .status(403)
-        .json({ message: "Accès interdit: token manquant ou mal formaté" });
-    }
+    const decoded = await jwt.verify(token, jwtkey);
+    req.user = decoded;
+    next();
   } catch (error) {
     console.log(error);
-    res.status(403).json({ message: "Accès interdit: token invalide" });
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(403).json({ message: "Invalid token" });
+    }
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(403).json({ message: "Token expired" });
+    }
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
